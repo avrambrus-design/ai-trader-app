@@ -45,7 +45,6 @@ if uploaded_file:
                     response = client.chat.completions.create(
                         model="gpt-4o",
                         messages=
-                        ],
                         max_tokens=1000
                     )
                     
