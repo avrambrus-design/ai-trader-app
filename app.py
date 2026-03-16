@@ -4,35 +4,32 @@ import base64
 from PIL import Image
 import io
 
-# 1. Настройка страницы
-st.set_page_config(page_title="AI Trader Millionaire", layout="wide")
-st.title("📈 Анализ графика от Трейдера-Миллионера")
+st.set_page_config(page_title="AI Trader", layout="wide")
+st.title("📈 AI Trader Millionaire")
 
-# 2. Боковая панель
-st.sidebar.header("Настройки")
-api_key = st.sidebar.text_input("Введите OpenAI API Key", type="password")
+# Боковая панель для ключа
+api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
-def encode_image(image):
-    buffered = io.BytesIO()
-    image.save(buffered, format="JPEG")
-    return base64.b64encode(buffered.getvalue()).decode('utf-8')
-
-# 3. Основной функционал
+# Загрузка фото
 uploaded_file = st.file_uploader("Загрузите скриншот графика", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
     image = Image.open(uploaded_file)
     st.image(image, caption='Ваш график', use_container_width=True)
     
-    if st.button("🚀 Проанализировать сделку"):
+    if st.button("🚀 Проанализировать"):
         if not api_key:
-            st.error("Ошибка: Введите API Key в поле слева!")
+            st.error("Введите API Key слева!")
         else:
             try:
                 client = openai.OpenAI(api_key=api_key)
-                base64_image = encode_image(image)
                 
-                with st.spinner('Анализирую рынок...'):
+                # Подготовка картинки
+                buffered = io.BytesIO()
+                image.save(buffered, format="JPEG")
+                img_str = base64.b64encode(buffered.getvalue()).decode()
+                
+                with st.spinner('Анализирую...'):
                     response = client.chat.completions.create(
                         model="gpt-4o",
                         messages=,
@@ -40,9 +37,9 @@ if uploaded_file:
                         ],
                         max_tokens=500,
                     )
-                    st.subheader("📊 Вердикт:")
-                    st.write(response.choices.message.content)
+                    st.subheader("Вердикт:")
+                    st.write(response.choices[0].message.content)
             except Exception as e:
-                st.error(f"Ошибка API: {str(e)}")
+                st.error(f"Ошибка: {e}")
 else:
-    st.info("Ожидаю загрузку графика...")
+    st.info("Загрузите скриншот графика для начала анализа.")
