@@ -24,13 +24,12 @@ if uploaded_file:
             try:
                 client = openai.OpenAI(api_key=api_key)
                 
-                # Кодируем картинку
+                # Подготовка картинки
                 buffered = io.BytesIO()
                 image.save(buffered, format="JPEG")
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
                 with st.spinner('Анализирую...'):
-                    # Правильный и полный запрос к ИИ
                     response = client.chat.completions.create(
                         model="gpt-4o",
                         messages=
