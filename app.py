@@ -32,11 +32,8 @@ if uploaded_file:
                 with st.spinner('Анализирую рынок...'):
                     # Запрос к ИИ
                     response = client.chat.completions.create
-                        model="gpt-4o",
+                        model="gpt-4o"
                         messages=
-                            
-                        
-                
                     st.subheader("📊 Вердикт:")
                     st.write(response.choices.message.content)
             except Exception as e:
