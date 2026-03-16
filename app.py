@@ -7,17 +7,17 @@ import io
 st.set_page_config(page_title="AI Trader", layout="wide")
 st.title("📈 AI Trader Millionaire")
 
-# 1. Настройки в боковой панели
+# Поле для ключа в левой колонке
 key = st.sidebar.text_input("OpenAI API Key", type="password")
-file = st.file_uploader("Загрузите график", type=["jpg", "jpeg", "png"])
+file = st.file_uploader("Загрузите скриншот графика", type=["jpg", "jpeg", "png"])
 
 if file:
     img = Image.open(file)
     st.image(img, use_container_width=True)
     
-    if st.button("🚀 Анализ"):
+    if st.button("🚀 Проанализировать сделку"):
         if not key:
-            st.error("Введите ключ!")
+            st.error("Ошибка: Сначала вставьте API Key в поле слева!")
         else:
             try:
                 client = OpenAI(api_key=key)
@@ -25,21 +25,16 @@ if file:
                 # Кодируем картинку
                 buf = io.BytesIO()
                 img.save(buf, format="JPEG")
-                raw_img = base64.b64encode(buf.getvalue()).decode('utf-8')
+                img_b64 = base64.b64encode(buf.getvalue()).decode()
                 
-                # Готовим данные для запроса (разбиваем по частям, чтобы не запутаться)
-                instruction = "Ты трейдер на $1,000,000. Дай точку входа, стоп и тейк по графику."
-                img_data = {"url": f"data:image/jpeg;base64,{raw_img}"}
-                
-                content =
-                
-                with st.spinner('Анализирую...'):
-                    # Сам запрос
+                with st.spinner('Трейдер-миллионер изучает график...'):
+                    # Запрос к нейросети (ВСЁ В ОДНОМ)
                     res = client.chat.completions.create(
                         model="gpt-4o",
-                        messages=[{"role": "user", "content": content}]
+                        messages=
+                        }]
                     )
-                    st.subheader("Вердикт:")
+                    st.subheader("📊 Вердикт:")
                     st.write(res.choices.message.content)
             except Exception as e:
-                st.error(f"Ошибка: {e}")
+                st.error(f"Произошла ошибка: {e}")
