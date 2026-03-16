@@ -25,10 +25,9 @@ if uploaded_file:
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
                 with st.spinner('Анализирую...'):
-                    response = client.chat.completions.create(
+                    response = client.chat.completions.create
                         model="gpt-4o",
-                        messages=}]
-                    )
+                        messages=
                     st.write(response.choices.message.content)
             except Exception as e:
                 st.error(f"Ошибка: {e}")
