@@ -33,7 +33,6 @@ if uploaded_file:
                     response = client.chat.completions.create(
                         model="gpt-4o",
                         messages=
-                            }
                         ]
                     )
                     st.subheader("Вердикт:")
